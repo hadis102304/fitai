@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FitAI — Your AI-Powered Fitness Coach</title>
+<meta name="description" content="Custom workout plans, AI meal planning, and progress tracking — all personalized to your body and goals."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--a:#C5F135;--bg:#080808;--s1:#111;--s2:#181818;--bd:#282828;--t1:#fff;--t2:#888;--t3:#444}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:'DM Sans',system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd)}
+.logo{font-family:'Bebas Neue',cursive;font-size:28px;color:var(--a);letter-spacing:4px}
+.nav-links{display:flex;gap:8px;align-items:center}
+.nav-link{color:var(--t2);font-size:13px;padding:6px 12px;border-radius:8px;transition:color .15s}
+.nav-link:hover{color:var(--t1)}
+.nav-cta{background:var(--a);color:#000;font-size:13px;font-weight:600;padding:8px 18px;border-radius:9px;transition:background .15s}
+.nav-cta:hover{background:#d4ff4a}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 60px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(197,241,53,.06) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(197,241,53,.1);border:1px solid rgba(197,241,53,.3);border-radius:20px;padding:6px 16px;font-size:12px;color:var(--a);font-weight:500;letter-spacing:.5px;margin-bottom:28px}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--a);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hero h1{font-family:'Bebas Neue',cursive;font-size:clamp(64px,12vw,130px);line-height:.95;letter-spacing:2px;margin-bottom:24px}
+.hero h1 span{color:var(--a)}
+.hero-sub{color:var(--t2);font-size:clamp(15px,2vw,18px);max-width:520px;margin:0 auto 40px;font-weight:300;line-height:1.7}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:60px}
+.btn-primary{background:var(--a);color:#000;font-size:15px;font-weight:600;padding:14px 30px;border-radius:12px;border:none;cursor:pointer;font-family:inherit;transition:background .15s;display:inline-block}
+.btn-primary:hover{background:#d4ff4a}
+.btn-ghost{background:transparent;color:var(--t1);font-size:15px;font-weight:500;padding:14px 30px;border-radius:12px;border:1px solid var(--bd);cursor:pointer;font-family:inherit;transition:border-color .15s;display:inline-block}
+.btn-ghost:hover{border-color:var(--t2)}
+.hero-stats{display:flex;gap:40px;flex-wrap:wrap;justify-content:center}
+.hero-stat{}
+.hero-stat-num{font-family:'Bebas Neue',cursive;font-size:36px;color:var(--a);letter-spacing:2px}
+.hero-stat-label{color:var(--t2);font-size:12px;text-transform:uppercase;letter-spacing:1px}
+
+/* SECTION */
+section{padding:100px 24px}
+.container{max-width:1080px;margin:0 auto}
+.section-label{color:var(--a);font-size:11px;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-bottom:16px}
+.section-title{font-family:'Bebas Neue',cursive;font-size:clamp(42px,7vw,72px);letter-spacing:1px;line-height:1;margin-bottom:20px}
+.section-sub{color:var(--t2);font-size:16px;max-width:500px;line-height:1.7}
+
+/* FEATURES */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:60px}
+.feature-card{background:var(--s2);border:1px solid var(--bd);border-radius:16px;padding:28px;transition:border-color .2s}
+.feature-card:hover{border-color:rgba(197,241,53,.4)}
+.feature-icon{width:44px;height:44px;border-radius:10px;background:rgba(197,241,53,.12);border:1px solid rgba(197,241,53,.2);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:20px}
+.feature-title{font-weight:600;font-size:16px;margin-bottom:8px}
+.feature-desc{color:var(--t2);font-size:14px;line-height:1.65}
+
+/* HOW IT WORKS */
+.how-section{background:var(--s1)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;margin-top:60px;position:relative}
+.steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--bd),var(--bd),transparent);pointer-events:none}
+.step{text-align:center;padding:0 20px;position:relative}
+.step-num{width:56px;height:56px;border-radius:50%;background:var(--bg);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:'Bebas Neue',cursive;font-size:22px;color:var(--a);position:relative;z-index:1}
+.step-title{font-weight:600;font-size:15px;margin-bottom:8px}
+.step-desc{color:var(--t2);font-size:13px;line-height:1.6}
+
+/* SPLIT PREVIEW */
+.splits-section{}
+.splits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:40px}
+.split-card{background:var(--s2);border:1px solid var(--bd);border-radius:12px;padding:16px}
+.split-name{font-weight:600;font-size:13px;margin-bottom:4px;color:var(--t1)}
+.split-days{color:var(--a);font-size:11px;margin-bottom:4px}
+.split-desc{color:var(--t2);font-size:11px}
+.muscles-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:24px}
+.muscle-tag{background:rgba(197,241,53,.1);border:1px solid rgba(197,241,53,.25);color:var(--a);font-size:11px;padding:3px 10px;border-radius:20px}
+
+/* PRICING */
+.pricing-section{background:var(--s1)}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:60px;max-width:680px}
+.price-card{background:var(--s2);border:1px solid var(--bd);border-radius:16px;padding:28px}
+.price-card.featured{border-color:var(--a);background:rgba(197,241,53,.04)}
+.price-badge{background:var(--a);color:#000;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:16px;letter-spacing:.5px}
+.price-name{font-family:'Bebas Neue',cursive;font-size:28px;letter-spacing:1px;margin-bottom:8px}
+.price-amount{font-family:'Bebas Neue',cursive;font-size:52px;color:var(--a);letter-spacing:1px;line-height:1}
+.price-period{color:var(--t2);font-size:13px;margin-bottom:24px}
+.price-features{list-style:none;margin-bottom:28px}
+.price-features li{color:var(--t2);font-size:13px;padding:6px 0;border-bottom:1px solid var(--bd);display:flex;gap:8px;align-items:center}
+.price-features li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--a);flex-shrink:0}
+.price-features li.active{color:var(--t1)}
+
+/* TESTIMONIALS */
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:60px}
+.testimonial{background:var(--s2);border:1px solid var(--bd);border-radius:16px;padding:24px}
+.testimonial-text{color:var(--t1);font-size:14px;line-height:1.7;margin-bottom:20px;font-style:italic}
+.testimonial-author{display:flex;align-items:center;gap:12px}
+.testimonial-avatar{width:36px;height:36px;border-radius:50%;background:rgba(197,241,53,.2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--a)}
+.testimonial-name{font-weight:600;font-size:13px}
+.testimonial-sub{color:var(--t2);font-size:11px}
+
+/* CTA SECTION */
+.cta-section{text-align:center;padding:120px 24px}
+.cta-section h2{font-family:'Bebas Neue',cursive;font-size:clamp(48px,8vw,90px);letter-spacing:2px;line-height:1;margin-bottom:20px}
+.cta-section h2 span{color:var(--a)}
+.cta-section p{color:var(--t2);font-size:16px;max-width:420px;margin:0 auto 40px}
+
+/* FOOTER */
+footer{background:var(--s1);border-top:1px solid var(--bd);padding:40px 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:'Bebas Neue',cursive;font-size:22px;color:var(--a);letter-spacing:3px}
+.footer-links{display:flex;gap:20px}
+.footer-link{color:var(--t2);font-size:12px;transition:color .15s}
+.footer-link:hover{color:var(--t1)}
+.footer-copy{color:var(--t3);font-size:11px;text-align:center;width:100%;padding-top:16px;border-top:1px solid var(--bd);margin-top:8px}
+
+@media(max-width:640px){
+  nav{padding:0 16px}
+  .nav-links .nav-link{display:none}
+  .steps::before{display:none}
+  footer{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">FITAI</div>
+  <div class="nav-links">
+    <a href="#features" class="nav-link">Features</a>
+    <a href="#how" class="nav-link">How it works</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
+    <a href="/app" class="nav-cta">Get Started Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    AI-Powered · Fully Personalized
+  </div>
+  <h1>YOUR BODY.<br/><span>YOUR PLAN.</span><br/>ZERO GUESSWORK.</h1>
+  <p class="hero-sub">FitAI builds custom workout splits, generates meal plans, and coaches you in real time — all based on your exact stats and goals.</p>
+  <div class="hero-actions">
+    <a href="/app" class="btn-primary">Start for Free →</a>
+    <a href="#how" class="btn-ghost">See how it works</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">6</div>
+      <div class="hero-stat-label">Training Splits</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">12</div>
+      <div class="hero-stat-label">Muscle Groups</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">100%</div>
+      <div class="hero-stat-label">Personalized</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">AI</div>
+      <div class="hero-stat-label">Always On</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="container">
+    <p class="section-label">Everything you need</p>
+    <h2 class="section-title">ONE APP.<br/>ALL THE TOOLS.</h2>
+    <p class="section-sub">No more switching between 4 different apps. FitAI handles every part of your fitness journey.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-title">AI Coach</div>
+        <div class="feature-desc">Chat with an AI that knows your weight, goal, TDEE, and history. Gets smarter the more you use it.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💪</div>
+        <div class="feature-title">Workout Generator</div>
+        <div class="feature-desc">Choose your split, pick your target muscles, and get a full structured plan in seconds.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🥗</div>
+        <div class="feature-title">Meal Planner</div>
+        <div class="feature-desc">Full 1-day meal plans with macros, tailored to your calorie target and diet style.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Progress Tracker</div>
+        <div class="feature-desc">Log your weight over time and watch your trend line move toward your goal.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔢</div>
+        <div class="feature-title">TDEE Calculator</div>
+        <div class="feature-desc">Enter your stats once. FitAI calculates your exact daily calorie target and adjusts automatically.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📁</div>
+        <div class="feature-title">Saved Plans Library</div>
+        <div class="feature-desc">Every workout and meal plan you generate is saved to your account, available on any device.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="container">
+    <p class="section-label">Simple process</p>
+    <h2 class="section-title">UP AND RUNNING<br/><span style="color:var(--a)">IN MINUTES.</span></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Create your account</div>
+        <div class="step-desc">Sign up with email or Google in under 30 seconds.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Enter your stats</div>
+        <div class="step-desc">Age, height, weight, goal. FitAI calculates your TDEE automatically.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Get your plan</div>
+        <div class="step-desc">Generate a workout split, meal plan, or just ask the coach anything.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Track and repeat</div>
+        <div class="step-desc">Log your progress. Everything syncs to your account across devices.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPLITS PREVIEW -->
+<section class="splits-section">
+  <div class="container">
+    <p class="section-label">Workout generator</p>
+    <h2 class="section-title">PICK YOUR SPLIT.<br/><span style="color:var(--a)">TARGET YOUR MUSCLES.</span></h2>
+    <p class="section-sub">Choose from 6 training splits. Select exactly which muscle groups to target. Get a structured plan with form tips and rest times.</p>
+    <div class="splits-grid">
+      <div class="split-card"><div class="split-name">Push / Pull / Legs</div><div class="split-days">3–6 days/wk</div><div class="split-desc">Classic hypertrophy split</div></div>
+      <div class="split-card"><div class="split-name">Upper / Lower</div><div class="split-days">4 days/wk</div><div class="split-desc">Balanced strength & size</div></div>
+      <div class="split-card"><div class="split-name">Full Body</div><div class="split-days">3 days/wk</div><div class="split-desc">Best for fat loss</div></div>
+      <div class="split-card"><div class="split-name">Bro Split</div><div class="split-days">5 days/wk</div><div class="split-desc">One muscle group per day</div></div>
+      <div class="split-card"><div class="split-name">Arnold Split</div><div class="split-days">6 days/wk</div><div class="split-desc">High volume classic</div></div>
+      <div class="split-card"><div class="split-name">5-Day Split</div><div class="split-days">5 days/wk</div><div class="split-desc">Advanced athletes</div></div>
+    </div>
+    <div class="muscles-row">
+      <span class="muscle-tag">Chest</span><span class="muscle-tag">Back</span><span class="muscle-tag">Shoulders</span><span class="muscle-tag">Biceps</span><span class="muscle-tag">Triceps</span><span class="muscle-tag">Forearms</span><span class="muscle-tag">Quads</span><span class="muscle-tag">Hamstrings</span><span class="muscle-tag">Glutes</span><span class="muscle-tag">Calves</span><span class="muscle-tag">Core</span><span class="muscle-tag">Traps</span>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section style="background:var(--s1);padding:100px 24px">
+  <div class="container">
+    <p class="section-label">Real results</p>
+    <h2 class="section-title">WHAT PEOPLE<br/>ARE SAYING.</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="testimonial-text">"I've tried a dozen fitness apps. FitAI is the first one that actually gives me a plan that fits my schedule and equipment. The AI coach is genuinely helpful — not just generic advice."</div>
+        <div class="testimonial-author"><div class="testimonial-avatar">MR</div><div><div class="testimonial-name">Marcus R.</div><div class="testimonial-sub">Lost 18 lbs in 3 months</div></div></div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-text">"The meal planner alone is worth it. I tell it my calories and diet style and it gives me a full day of meals with macros. I've stopped overthinking food."</div>
+        <div class="testimonial-author"><div class="testimonial-avatar">SL</div><div><div class="testimonial-name">Sarah L.</div><div class="testimonial-sub">Hit goal weight in 10 weeks</div></div></div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-text">"I asked the coach why I hit a plateau and it gave me a specific answer based on my stats. That's not something a generic app can do. It feels like having a real trainer."</div>
+        <div class="testimonial-author"><div class="testimonial-avatar">DJ</div><div><div class="testimonial-name">Devon J.</div><div class="testimonial-sub">Gained 12 lbs of muscle</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="container">
+    <p class="section-label">Simple pricing</p>
+    <h2 class="section-title">START FREE.<br/><span style="color:var(--a)">UPGRADE WHEN READY.</span></h2>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-name">Free</div>
+        <div class="price-amount">$0</div>
+        <div class="price-period">forever</div>
+        <ul class="price-features">
+          <li class="active">10 AI generations/month</li>
+          <li class="active">Workout generator</li>
+          <li class="active">Meal planner</li>
+          <li class="active">Progress tracker</li>
+          <li class="active">Saved plans library</li>
+          <li>Unlimited AI coach</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="/app" class="btn-ghost" style="display:block;text-align:center;padding:12px">Get Started Free</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-badge">MOST POPULAR</div>
+        <div class="price-name">Pro</div>
+        <div class="price-amount">$12</div>
+        <div class="price-period">/month · cancel anytime</div>
+        <ul class="price-features">
+          <li class="active">Unlimited AI generations</li>
+          <li class="active">Workout generator</li>
+          <li class="active">Meal planner</li>
+          <li class="active">Progress tracker</li>
+          <li class="active">Saved plans library</li>
+          <li class="active">Unlimited AI coach</li>
+          <li class="active">Priority support</li>
+        </ul>
+        <a href="https://buy.stripe.com/your-link" class="btn-primary" style="display:block;text-align:center;padding:12px">Upgrade to Pro →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>READY TO<br/><span>START?</span></h2>
+  <p>Free to try. No credit card. Your first workout plan is one click away.</p>
+  <a href="/app" class="btn-primary" style="font-size:16px;padding:16px 36px">Build My Plan →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">FITAI</div>
+  <div class="footer-links">
+    <a href="/privacy" class="footer-link">Privacy Policy</a>
+    <a href="/terms" class="footer-link">Terms of Service</a>
+    <a href="mailto:support@fitai.app" class="footer-link">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 FitAI. Not a substitute for professional medical advice. Consult a doctor before starting any new diet or exercise program.</div>
+</footer>
+
+</body>
+</html>
